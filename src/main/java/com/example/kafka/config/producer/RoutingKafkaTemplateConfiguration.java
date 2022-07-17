@@ -1,4 +1,4 @@
-package com.example.kafka.config;
+package com.example.kafka.config.producer;
 
 import java.util.HashMap;
 import java.util.LinkedHashMap;

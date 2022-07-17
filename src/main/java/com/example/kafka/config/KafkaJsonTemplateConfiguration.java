@@ -10,16 +10,19 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.core.DefaultKafkaProducerFactory;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.core.ProducerFactory;
+import org.springframework.kafka.support.serializer.JsonSerializer;
+
+import com.example.kafka.model.Animal;
 
 @Configuration
-public class KafkaTemplateConfiguration {
+public class KafkaJsonTemplateConfiguration {
 
 	@Bean
-	public KafkaTemplate<String, String> kafkaTemplate() {
+	public KafkaTemplate<String, Animal> kafkaJsonTemplate() {
 		return new KafkaTemplate<>(producerFactory());
 	}
 
-	private ProducerFactory<String, String> producerFactory() {
+	private ProducerFactory<String, Animal> producerFactory() {
 		return new DefaultKafkaProducerFactory<>(producerProps());
 	}
 
@@ -27,8 +30,9 @@ public class KafkaTemplateConfiguration {
 		Map<String, Object> props = new HashMap<>();
 		props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
 		props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
-		props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
+		props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, JsonSerializer.class);
 
 		return props;
 	}
+
 }

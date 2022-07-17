@@ -17,6 +17,8 @@ import org.springframework.kafka.support.SendResult;
 import org.springframework.stereotype.Service;
 import org.springframework.util.concurrent.ListenableFuture;
 
+import com.example.kafka.model.Animal;
+
 @Service
 public class Producer {
 
@@ -24,10 +26,13 @@ public class Producer {
 	private KafkaTemplate<String, String> kafkaTemplate;
 
 	@Autowired
-	private RoutingKafkaTemplate routingKafkaTemplate;
+	private KafkaTemplate<String, Animal> kafkaJsonTemplate;
 
 	@Autowired
-	private ReplyingKafkaTemplate<String, String, String> replyingKafkaTemplate;
+	private RoutingKafkaTemplate routingKafkaTemplate;
+
+	// @Autowired
+	// private ReplyingKafkaTemplate<String, String, String> replyingKafkaTemplate;
 
 	public void async(String topic, String message) {
 		ListenableFuture<SendResult<String, String>> future = kafkaTemplate.send(topic, message);
@@ -67,16 +72,20 @@ public class Producer {
 		routingKafkaTemplate.send(topic, message);
 	}
 
-	public void replyingSend(String topic, String message) throws
-		InterruptedException,
-		ExecutionException,
-		TimeoutException
-	{
-		ProducerRecord<String, String> record = new ProducerRecord<>(topic, message);
-		RequestReplyFuture<String, String, String> replyFuture = replyingKafkaTemplate.sendAndReceive(
-			record);
-		ConsumerRecord<String, String> consumerRecord = replyFuture.get(10, TimeUnit.SECONDS);
-		System.out.println(consumerRecord.value());
+	// public void replyingSend(String topic, String message) throws
+	// 	InterruptedException,
+	// 	ExecutionException,
+	// 	TimeoutException
+	// {
+	// 	ProducerRecord<String, String> record = new ProducerRecord<>(topic, message);
+	// 	RequestReplyFuture<String, String, String> replyFuture = replyingKafkaTemplate.sendAndReceive(
+	// 		record);
+	// 	ConsumerRecord<String, String> consumerRecord = replyFuture.get(10, TimeUnit.SECONDS);
+	// 	System.out.println(consumerRecord.value());
+	// }
+
+	public void async(String topic, Animal animal) {
+		kafkaJsonTemplate.send(topic, animal);
 	}
 
 }

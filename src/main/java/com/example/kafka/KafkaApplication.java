@@ -13,7 +13,9 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.kafka.listener.KafkaMessageListenerContainer;
 
+import com.example.kafka.model.Animal;
 import com.example.kafka.producer.Producer;
 
 @SpringBootApplication
@@ -51,11 +53,54 @@ public class KafkaApplication {
 	@Bean
 	public ApplicationRunner runner2(Producer producer) {
 		return args -> {
-			producer.async("ethereum", "Hello async");
-			producer.sync("ethereum", "Hello async");
-			producer.routingSend("ethereum", "Hello routingSend");
-			producer.routingSendBytes("ethereum-bytes", "Hello bytes".getBytes(StandardCharsets.UTF_8));
-			producer.replyingSend("ethereum-request", "Response Ethereum");
+			// producer.async("ethereum", "Hello async");
+			// producer.sync("ethereum", "Hello async");
+			// producer.routingSend("ethereum", "Hello routingSend");
+			// producer.routingSendBytes("ethereum-bytes", "Hello bytes".getBytes(StandardCharsets.UTF_8));
+			// producer.replyingSend("ethereum-request", "Response Ethereum");
+		};
+	}
+
+	/**
+	 * 리스너 컨테이너의 수동 조작
+	 */
+	@Bean
+	public ApplicationRunner runner3(
+		Producer producer,
+		KafkaMessageListenerContainer<String, String> container
+	) {
+		return args -> {
+			// producer.async("ethereum", "Hello ETH Container");
+			// container.start();
+			// Thread.sleep(1000);
+			//
+			// System.out.println("-- pause --");
+			// container.pause();
+			// Thread.sleep(5000);
+			//
+			// producer.async("ethereum", "Hello ETH Container Second");
+			//
+			//
+			// System.out.println("-- resume --");
+			// container.resume();
+			// Thread.sleep(1000);
+			//
+			// System.out.println("-- stop --");
+			// container.stop();
+		};
+	}
+
+	@Bean
+	public ApplicationRunner runner4(Producer producer) {
+		return args -> {
+			// producer.async("ethereum", "Hello ETH 2.0 2");
+		};
+	}
+
+	@Bean
+	public ApplicationRunner kafkaJsonTemplateRunner(Producer producer) {
+		return args -> {
+			producer.async("ethereum-animal", new Animal("puppy", 15));
 		};
 	}
 
