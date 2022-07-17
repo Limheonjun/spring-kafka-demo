@@ -1,4 +1,4 @@
-package com.example.kafka;
+package com.example.kafka.config;
 
 import org.apache.kafka.clients.admin.AdminClient;
 import org.apache.kafka.clients.admin.NewTopic;
@@ -26,6 +26,9 @@ public class KafkaTopicConfiguration {
 	public KafkaAdmin.NewTopics newToPics() {
 		return new KafkaAdmin.NewTopics(
 			TopicBuilder.name("bitcoin").build(),
+			TopicBuilder.name("ethereum-bytes").build(),
+			TopicBuilder.name("ethereum-request").build(),
+			TopicBuilder.name("ethereum-replies").build(),
 			TopicBuilder.name("ethereum")
 				.partitions(3) //파티션 개수 설정
 				.replicas(1) //레플리카 개수 설정
